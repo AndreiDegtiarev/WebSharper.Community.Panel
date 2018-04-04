@@ -2,9 +2,9 @@ namespace WebSharper.Community.Panel
 
 open WebSharper
 open WebSharper.JavaScript
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
 open WebSharper.Community.PropertyGrid
 
 [<JavaScript>]
@@ -64,9 +64,9 @@ and [<JavaScript>] Panel =
             PannelAttrs = []
             IsWithTitle = Var.Create true
             TitleAttrs =  [Attr.Class "panelTitle"]
-            TitleContent = div[]
+            TitleContent = div[][]
             TitleButtons = []
-            PanelContent = div[]
+            PanelContent = div[][]
             Children = PanelContainer.Create
             InternalName=""
             onAfterRender=(fun (_) ->())
@@ -141,10 +141,10 @@ and [<JavaScript>] Panel =
                                     ]|>Seq.ofList
                                ]
         let titleContentUpdated =
-                            tableAttr [Attr.Style "width" "100%"]
-                                      [tr[
-                                         td [x.TitleContent]
-                                         tdAttr[
+                                table [Attr.Style "width" "100%"]
+                                      [tr[][
+                                         td[] [x.TitleContent]
+                                         td[
                                            Attr.Style "text-align" "right"
                                            Attr.Style "vertical-align" "middle"]
                                            (x.TitleButtons |>List.map (fun btn -> btn.Render x))
@@ -173,20 +173,20 @@ and [<JavaScript>] Panel =
                      ]|>Seq.ofList
                  ]
         let resDiv = 
-            divAttr
+            div
                  panelAttrsUpdated
                  [
-                     tableAttr [] [
-                         tr[
-                             tdAttr attrWidth [
+                     table [] [
+                         tr[][
+                             td attrWidth [
                                   x.IsWithTitle.View |> View.Map(fun is -> 
                                                                      if is then
-                                                                        divAttr titleAttrsUpdated [titleContentUpdated]
-                                                                      else div[]) |> Doc.EmbedView
+                                                                        div titleAttrsUpdated [titleContentUpdated]
+                                                                      else div[][]) |> Doc.EmbedView
                                                ]
                           ]
-                         tr[
-                             tdAttr [] [
+                         tr[][
+                             td [] [
                                  x.PanelContent
                                  x.Children.Render]
                          ]
@@ -244,7 +244,7 @@ and [<JavaScript>] PanelContainer =
                                                 Attr.Style "position" "relative"                                      
                                             ]|>Seq.ofList
                                       ]
-        divAttr attrsUpdated
+        div attrsUpdated
                 [
                     ListModel.View x.PanelItems
                     |> Doc.BindSeqCachedBy (fun m -> m.Key) (fun item -> (item.Render).OnAfterRender(fun el -> 

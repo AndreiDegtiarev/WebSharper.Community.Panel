@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,WebSharper,Community,Panel,Test,Client,ContentItem,ContentModel,SC$1,IntelliFactory,Runtime,UI,Next,Doc,ListModel,List,AttrModule,View,Helper,Var,PanelContainer,LayoutManagers,Panel$1,TitleButton,PropertyGrid,Properties,PropertyGrid$1,Dialog,Interpolation,Easing,An,Trans;
+ var Global,WebSharper,Community,Panel,Test,Client,ContentItem,ContentModel,SC$1,IntelliFactory,Runtime,UI,Doc,ListModel,List,AttrModule,View,Helper,PanelContainer,LayoutManagers,Panel$1,Var,TitleButton,PropertyGrid,Properties,PropertyGrid$1,Dialog,Interpolation,Easing,An,Trans;
  Global=window;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Community=WebSharper.Community=WebSharper.Community||{};
@@ -14,26 +14,25 @@
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  UI=WebSharper&&WebSharper.UI;
- Next=UI&&UI.Next;
- Doc=Next&&Next.Doc;
- ListModel=Next&&Next.ListModel;
+ Doc=UI&&UI.Doc;
+ ListModel=UI&&UI.ListModel;
  List=WebSharper&&WebSharper.List;
- AttrModule=Next&&Next.AttrModule;
- View=Next&&Next.View;
+ AttrModule=UI&&UI.AttrModule;
+ View=UI&&UI.View;
  Helper=Panel&&Panel.Helper;
- Var=Next&&Next.Var;
  PanelContainer=Panel&&Panel.PanelContainer;
  LayoutManagers=Panel&&Panel.LayoutManagers;
  Panel$1=Panel&&Panel.Panel;
+ Var=UI&&UI.Var;
  TitleButton=Panel&&Panel.TitleButton;
  PropertyGrid=Community&&Community.PropertyGrid;
  Properties=PropertyGrid&&PropertyGrid.Properties;
  PropertyGrid$1=PropertyGrid&&PropertyGrid.PropertyGrid;
  Dialog=Panel&&Panel.Dialog;
- Interpolation=Next&&Next.Interpolation;
- Easing=Next&&Next.Easing;
- An=Next&&Next.An;
- Trans=Next&&Next.Trans;
+ Interpolation=UI&&UI.Interpolation;
+ Easing=UI&&UI.Easing;
+ An=UI&&UI.An;
+ Trans=UI&&UI.Trans;
  ContentItem.New=function(Text)
  {
   return{
@@ -68,8 +67,8 @@
   {
    return AttrModule.AnimatedStyle(param,Client.TransTransition(),View.Map(function()
    {
-    return Client.isExpanded().c?100:0;
-   },Client.isExpanded().v),function(x)
+    return Client.isExpanded().Get()?100:0;
+   },Client.isExpanded().get_View()),function(x)
    {
     return Global.String(x)+unit;
    });
@@ -79,20 +78,20 @@
    return Doc.Element("td",[AttrModule.Style("vertical-align","middle"),AttrModule.Style("color","White"),AttrModule.DynamicStyle("visibility",View.Map(function(isExpand)
    {
     return isExpand?"visible":"hidden";
-   },Client.isExpanded().v)),animAttr("font-size","%")],[Doc.TextNode(txt)]);
+   },Client.isExpanded().get_View())),animAttr("font-size","%")],[Doc.TextNode(txt)]);
   }
   return Doc.Element("div",[],[Doc.Element("div",[AttrModule.DynamicStyle("pointer-events",View.Map(function()
   {
-   return Client.dlg().Visibility.c?"none":"auto";
-  },Client.dlg().Visibility.v)),AttrModule.DynamicStyle("opacity",View.Map(function()
+   return Client.dlg().Visibility.Get()?"none":"auto";
+  },Client.dlg().Visibility.get_View())),AttrModule.DynamicStyle("opacity",View.Map(function()
   {
-   return Client.dlg().Visibility.c?"0.5":"1";
-  },Client.dlg().Visibility.v))],[Doc.Element("table",[],[Doc.Element("tr",[],[Doc.Element("td",[AttrModule.Style("vertical-align","top")],[Doc.Element("table",[animAttr("width","px")],[Doc.Element("tr",[],[Doc.Element("td",[],[Helper.IconNormal("dehaze",function()
+   return Client.dlg().Visibility.Get()?"0.5":"1";
+  },Client.dlg().Visibility.get_View()))],[Doc.Element("table",[],[Doc.Element("tr",[],[Doc.Element("td",[AttrModule.Style("vertical-align","top")],[Doc.Element("table",[animAttr("width","px")],[Doc.Element("tr",[],[Doc.Element("td",[],[Helper.IconNormal("dehaze",function()
   {
-   if(!Client.isExpanded().c)
-    Var.Set(Client.isExpanded(),true);
+   if(!Client.isExpanded().Get())
+    Client.isExpanded().Set(true);
    else
-    Var.Set(Client.isExpanded(),false);
+    Client.isExpanded().Set(false);
   })])]),Doc.Element("tr",[],[Doc.Element("td",[],[Helper.IconNormal("announcement",function()
   {
    var a;
@@ -105,10 +104,10 @@
    childPanelContainer=PanelContainer.get_Create().WithLayoutManager(LayoutManagers.StackPanelLayoutManager());
    contentItems=ContentModel.get_Create();
    childPanel=Panel$1.get_Create().WithPannelAttrs([AttrModule.Class("panelContent")]).WithPanelContent(contentItems.get_Render()).WithWidth(150).WithHeight(150);
-   Var.Set(childPanel.IsWithTitle,false);
+   childPanel.IsWithTitle.Set(false);
    childPanelContainer.AddPanel(childPanel);
    titleVar=Var.Create$1("Panel "+Global.String(z_index));
-   panel=Panel$1.get_Create().WithPannelAttrs([AttrModule.Style("position","absolute")]).WithTitleContent(Doc.TextView(titleVar.v)).WithTitleButtons(List.ofArray([TitleButton.New("add",function()
+   panel=Panel$1.get_Create().WithPannelAttrs([AttrModule.Style("position","absolute")]).WithTitleContent(Doc.TextView(titleVar.get_View())).WithTitleButtons(List.ofArray([TitleButton.New("add",function()
    {
     var index,c;
     index=List.ofSeq(contentItems.Items).get_Length();
